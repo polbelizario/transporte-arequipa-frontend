@@ -1,0 +1,205 @@
+
+<section class="reservas-container">
+
+  <div class="encabezado">
+    <div>
+      <h2>Gestión de Reservas</h2>
+      <p>Registro y administración de reservas de transporte</p>
+    </div>
+
+    <button class="btn-principal" (click)="abrirNuevo()">
+      + Nueva reserva
+    </button>
+  </div>
+
+  <div *ngIf="mensaje" class="alerta exito">
+    {{ mensaje }}
+  </div>
+
+  <div *ngIf="error" class="alerta error">
+    {{ error }}
+  </div>
+
+  <div class="panel" *ngIf="mostrarFormulario">
+
+    <h3>Registrar reserva</h3>
+
+    <form (ngSubmit)="guardar()" #reservaForm="ngForm">
+
+      <div class="form-grid">
+
+        <div class="campo">
+          <label>Pasajero</label>
+
+          <select
+            name="pasajeroId"
+            [(ngModel)]="formulario.pasajeroId"
+            required
+          >
+            <option [ngValue]="0">Seleccione un pasajero</option>
+
+            <option
+              *ngFor="let pasajero of pasajeros"
+              [ngValue]="pasajero.id"
+            >
+              {{ pasajero.nombres }} {{ pasajero.apellidos }}
+              - DNI: {{ pasajero.dni }}
+            </option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label>Viaje</label>
+
+          <select
+            name="viajeId"
+            [(ngModel)]="formulario.viajeId"
+            required
+          >
+            <option [ngValue]="0">Seleccione un viaje</option>
+
+            <option
+              *ngFor="let viaje of viajesDisponibles"
+              [ngValue]="viaje.id"
+            >
+              {{ viaje.origen }} → {{ viaje.destino }}
+              | S/ {{ viaje.precio }}
+            </option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label>Cantidad de asientos</label>
+
+          <input
+            type="number"
+            name="cantidadAsientos"
+            [(ngModel)]="formulario.cantidadAsientos"
+            min="1"
+            step="1"
+            required
+          />
+        </div>
+
+      </div>
+
+      <p class="nota">
+        Solo se muestran viajes programados con fecha de salida futura.
+        La disponibilidad de asientos se valida en el backend.
+      </p>
+
+      <div class="acciones-formulario">
+
+        <button
+          type="button"
+          class="btn-cancelar"
+          (click)="cerrarFormulario()"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="btn-principal"
+          [disabled]="reservaForm.invalid || guardando"
+        >
+          {{ guardando ? 'Guardando...' : 'Confirmar reserva' }}
+        </button>
+
+      </div>
+
+    </form>
+  </div>
+
+  <div class="panel">
+
+    <div class="tabla-header">
+      <h3>Reservas registradas ({{ reservas.length }})</h3>
+
+      <input
+        type="text"
+        class="buscador"
+        placeholder="Buscar reserva..."
+        [(ngModel)]="busqueda"
+      />
+    </div>
+
+    <p *ngIf="cargando">Cargando reservas...</p>
+
+    <div class="tabla-scroll" *ngIf="!cargando">
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Pasajero</th>
+            <th>Viaje</th>
+            <th>Asientos</th>
+            <th>Fecha de reserva</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let reserva of reservasFiltradas">
+
+            <td>{{ reserva.id }}</td>
+
+            <td>
+              {{ nombrePasajero(reserva.pasajeroId) }}
+            </td>
+
+            <td>
+              {{ nombreViaje(reserva.viajeId) }}
+            </td>
+
+            <td>{{ reserva.cantidadAsientos }}</td>
+
+            <td>
+              {{ reserva.fechaReserva | date:'dd/MM/yyyy HH:mm' }}
+            </td>
+
+            <td>
+              <span
+                class="estado"
+                [ngClass]="reserva.estado.toLowerCase()"
+              >
+                {{ reserva.estado }}
+              </span>
+            </td>
+
+            <td>
+              <div class="acciones-tabla">
+
+                <button
+                  class="btn-cancelar-reserva"
+                  *ngIf="reserva.estado !== 'CANCELADA'"
+                  (click)="cancelarReserva(reserva)"
+                >
+                  Cancelar
+                </button>
+
+                <button
+                  class="btn-eliminar"
+                  (click)="eliminar(reserva)"
+                >
+                  Eliminar
+                </button>
+
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="reservasFiltradas.length === 0">
+            <td colspan="7" class="sin-datos">
+              No se encontraron reservas.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+</section>

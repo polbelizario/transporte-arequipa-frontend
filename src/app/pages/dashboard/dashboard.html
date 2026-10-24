@@ -1,0 +1,141 @@
+
+<section class="dashboard">
+
+  <!-- ENCABEZADO DEL DASHBOARD -->
+  <div class="dashboard-header">
+    <div>
+      <h2>Panel de Control</h2>
+      <p>Bienvenido al Sistema de Transporte de Arequipa</p>
+    </div>
+
+    <span class="estado">Sistema de Transporte</span>
+  </div>
+
+  <!-- TARJETAS DE ESTADÍSTICAS -->
+  <div class="estadisticas">
+
+    <!-- PASAJEROS -->
+    <div class="tarjeta pasajeros">
+      <div class="tarjeta-icono">👥</div>
+
+      <h3>Pasajeros</h3>
+
+      <div class="numero">
+        {{ cargando ? '...' : (error ? '--' : totalPasajeros) }}
+      </div>
+
+      <p>Pasajeros registrados</p>
+
+      <a routerLink="/pasajeros">
+        Ver pasajeros →
+      </a>
+    </div>
+
+    <!-- VIAJES -->
+    <div class="tarjeta viajes">
+      <div class="tarjeta-icono">🚌</div>
+
+      <h3>Viajes</h3>
+
+      <div class="numero">
+        {{ cargando ? '...' : (error ? '--' : totalViajes) }}
+      </div>
+
+      <p>Viajes registrados</p>
+
+      <a routerLink="/viajes">
+        Ver viajes →
+      </a>
+    </div>
+
+    <!-- RESERVAS -->
+    <div class="tarjeta reservas">
+      <div class="tarjeta-icono">🎫</div>
+
+      <h3>Reservas</h3>
+
+      <div class="numero">
+        {{ cargando ? '...' : (error ? '--' : totalReservas) }}
+      </div>
+
+      <p>Reservas realizadas</p>
+
+      <a routerLink="/reservas">
+        Ver reservas →
+      </a>
+    </div>
+
+  </div>
+
+  <!-- MENSAJE DE ERROR DE CONEXIÓN -->
+  @if (error) {
+    <div class="mensaje-error">
+      ⚠️ {{ error }}
+    </div>
+  }
+
+  <!-- SECCIÓN INFERIOR -->
+  <div class="seccion-inferior">
+
+    <!-- ACCESOS RÁPIDOS -->
+    <div class="panel">
+      <h3>Accesos rápidos</h3>
+
+      <p>Administra los módulos principales del sistema.</p>
+
+      <div class="acciones">
+
+        <a routerLink="/pasajeros">
+          👥 Gestionar pasajeros
+        </a>
+
+        <a routerLink="/viajes">
+          🚌 Gestionar viajes
+        </a>
+
+        <a routerLink="/reservas">
+          🎫 Gestionar reservas
+        </a>
+
+      </div>
+    </div>
+
+    <!-- INFORMACIÓN DEL SISTEMA -->
+    <div class="panel">
+      <h3>Información del sistema</h3>
+
+      <p>
+        <strong>Proyecto:</strong>
+        Transporte de Arequipa
+      </p>
+
+      <p>
+        <strong>Frontend:</strong>
+        Angular 22
+      </p>
+
+      <p>
+        <strong>Backend:</strong>
+        Spring Boot
+      </p>
+
+      <p>
+        <strong>Arquitectura:</strong>
+        Microservicios
+      </p>
+
+      <p>
+        <strong>Base de datos:</strong>
+        PostgreSQL
+      </p>
+
+      <p>
+        <strong>API Gateway:</strong>
+        Puerto 8080
+      </p>
+
+    </div>
+
+  </div>
+
+</section>

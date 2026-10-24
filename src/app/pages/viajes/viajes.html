@@ -1,0 +1,185 @@
+
+<section class="viajes-container">
+
+  <div class="encabezado">
+    <div>
+      <h2>Gestión de Viajes</h2>
+      <p>Registro y administración de rutas de transporte</p>
+    </div>
+
+    <button class="btn-principal" (click)="abrirNuevo()">
+      + Nuevo viaje
+    </button>
+  </div>
+
+  <div *ngIf="mensaje" class="alerta exito">
+    {{ mensaje }}
+  </div>
+
+  <div *ngIf="error" class="alerta error">
+    {{ error }}
+  </div>
+
+  <div class="panel formulario" *ngIf="mostrarFormulario">
+
+    <h3>
+      {{ editandoId === null ? 'Registrar viaje' : 'Editar viaje' }}
+    </h3>
+
+    <form (ngSubmit)="guardar()" #viajeForm="ngForm">
+
+      <div class="form-grid">
+
+        <div class="campo">
+          <label>Origen</label>
+          <input
+            type="text"
+            name="origen"
+            [(ngModel)]="formulario.origen"
+            placeholder="Ejemplo: Arequipa"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label>Destino</label>
+          <input
+            type="text"
+            name="destino"
+            [(ngModel)]="formulario.destino"
+            placeholder="Ejemplo: Mollendo"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label>Fecha y hora de salida</label>
+          <input
+            type="datetime-local"
+            name="fechaSalida"
+            [(ngModel)]="formulario.fechaSalida"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label>Precio (S/)</label>
+          <input
+            type="number"
+            name="precio"
+            [(ngModel)]="formulario.precio"
+            min="0.01"
+            step="0.01"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label>Capacidad</label>
+          <input
+            type="number"
+            name="capacidad"
+            [(ngModel)]="formulario.capacidad"
+            min="1"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label>Estado</label>
+          <select name="estado" [(ngModel)]="formulario.estado">
+            <option value="PROGRAMADO">PROGRAMADO</option>
+            <option value="EN_CURSO">EN CURSO</option>
+            <option value="FINALIZADO">FINALIZADO</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="acciones-formulario">
+        <button type="button" class="btn-cancelar" (click)="cancelar()">
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="btn-principal"
+          [disabled]="viajeForm.invalid || guardando"
+        >
+          {{ guardando ? 'Guardando...' : 'Guardar viaje' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="panel">
+
+    <div class="tabla-header">
+      <h3>Viajes registrados ({{ viajes.length }})</h3>
+
+      <input
+        type="text"
+        class="buscador"
+        placeholder="Buscar origen o destino..."
+        [(ngModel)]="busqueda"
+      />
+    </div>
+
+    <p *ngIf="cargando">Cargando viajes...</p>
+
+    <div class="tabla-scroll" *ngIf="!cargando">
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th>Fecha de salida</th>
+            <th>Precio</th>
+            <th>Capacidad</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let viaje of viajesFiltrados">
+            <td>{{ viaje.id }}</td>
+            <td>{{ viaje.origen }}</td>
+            <td>{{ viaje.destino }}</td>
+            <td>{{ viaje.fechaSalida | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>S/ {{ viaje.precio | number:'1.2-2' }}</td>
+            <td>{{ viaje.capacidad }}</td>
+            <td>
+              <span class="estado" [ngClass]="viaje.estado.toLowerCase()">
+                {{ viaje.estado }}
+              </span>
+            </td>
+            <td>
+              <div class="acciones-tabla">
+                <button class="btn-editar" (click)="editar(viaje)">
+                  Editar
+                </button>
+
+                <button class="btn-eliminar" (click)="eliminar(viaje)">
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="viajesFiltrados.length === 0">
+            <td colspan="8" class="sin-datos">
+              No se encontraron viajes.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+</section>

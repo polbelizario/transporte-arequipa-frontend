@@ -1,0 +1,137 @@
+
+.dashboard {
+  max-width: 1400px;
+  margin: auto;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 28px;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #17365d;
+}
+
+.dashboard-header p {
+  color: #64748b;
+  margin-top: 8px;
+}
+
+.estado {
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.estadisticas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-bottom: 28px;
+}
+
+.tarjeta {
+  background: white;
+  border-radius: 14px;
+  padding: 26px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  border-top: 5px solid #1677d2;
+}
+
+.tarjeta.pasajeros {
+  border-top-color: #2563eb;
+}
+
+.tarjeta.viajes {
+  border-top-color: #059669;
+}
+
+.tarjeta.reservas {
+  border-top-color: #ea580c;
+}
+
+.tarjeta-icono {
+  font-size: 32px;
+}
+
+.tarjeta h3 {
+  color: #334155;
+  margin: 15px 0 8px;
+}
+
+.numero {
+  font-size: 38px;
+  font-weight: bold;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.tarjeta p {
+  color: #64748b;
+  margin-bottom: 18px;
+}
+
+.tarjeta a {
+  color: #1677d2;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.seccion-inferior {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 22px;
+}
+
+.panel {
+  background: white;
+  padding: 26px;
+  border-radius: 14px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.panel h3 {
+  margin-top: 0;
+  color: #17365d;
+}
+
+.panel p {
+  color: #64748b;
+}
+
+.acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.acciones a {
+  padding: 14px;
+  background: #eff6ff;
+  border-radius: 8px;
+  color: #1d4ed8;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.acciones a:hover {
+  background: #dbeafe;
+}
+
+@media (max-width: 900px) {
+  .estadisticas,
+  .seccion-inferior {
+    grid-template-columns: 1fr;
+  }
+}

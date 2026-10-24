@@ -1,0 +1,184 @@
+
+<section class="pasajeros-container">
+
+  <div class="encabezado">
+    <div>
+      <h2>Gestión de Pasajeros</h2>
+      <p>Registro y administración de pasajeros</p>
+    </div>
+
+    <button class="btn-primary" (click)="nuevo()">
+      + Nuevo pasajero
+    </button>
+  </div>
+
+  @if (mensaje) {
+    <div class="alerta exito">{{ mensaje }}</div>
+  }
+
+  @if (error) {
+    <div class="alerta error">{{ error }}</div>
+  }
+
+  <!-- FORMULARIO -->
+  @if (mostrarFormulario) {
+    <div class="panel formulario-panel">
+
+      <h3>
+        {{ editandoId !== null
+          ? 'Editar pasajero'
+          : 'Registrar pasajero' }}
+      </h3>
+
+      <form #pasajeroForm="ngForm"
+            (ngSubmit)="guardar()">
+
+        <div class="form-grid">
+
+          <div class="campo">
+            <label>DNI</label>
+            <input
+              type="text"
+              name="dni"
+              [(ngModel)]="formulario.dni"
+              required
+              minlength="8"
+              maxlength="8"
+              pattern="[0-9]{8}"
+              placeholder="Ingrese DNI">
+          </div>
+
+          <div class="campo">
+            <label>Nombres</label>
+            <input
+              type="text"
+              name="nombres"
+              [(ngModel)]="formulario.nombres"
+              required
+              placeholder="Ingrese nombres">
+          </div>
+
+          <div class="campo">
+            <label>Apellidos</label>
+            <input
+              type="text"
+              name="apellidos"
+              [(ngModel)]="formulario.apellidos"
+              required
+              placeholder="Ingrese apellidos">
+          </div>
+
+          <div class="campo">
+            <label>Correo electrónico</label>
+            <input
+              type="email"
+              name="correo"
+              [(ngModel)]="formulario.correo"
+              required
+              email
+              placeholder="ejemplo@correo.com">
+          </div>
+
+          <div class="campo">
+            <label>Teléfono</label>
+            <input
+              type="text"
+              name="telefono"
+              [(ngModel)]="formulario.telefono"
+              required
+              pattern="[0-9]{9}"
+              maxlength="9"
+              placeholder="Ingrese teléfono">
+          </div>
+
+        </div>
+
+        <div class="form-acciones">
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="cancelar()">
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="pasajeroForm.invalid || guardando">
+            {{ guardando ? 'Guardando...' : 'Guardar pasajero' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  }
+
+  <!-- LISTADO -->
+  <div class="panel">
+
+    <div class="tabla-header">
+      <h3>Pasajeros registrados ({{ pasajeros.length }})</h3>
+
+      <input
+        type="text"
+        class="buscador"
+        placeholder="Buscar por nombre o DNI..."
+        [(ngModel)]="busqueda">
+    </div>
+
+    @if (cargando) {
+      <p>Cargando pasajeros...</p>
+    } @else {
+      <div class="tabla-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>DNI</th>
+              <th>Nombres</th>
+              <th>Apellidos</th>
+              <th>Correo</th>
+              <th>Teléfono</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (p of pasajerosFiltrados; track p.id) {
+              <tr>
+                <td>{{ p.id }}</td>
+                <td>{{ p.dni }}</td>
+                <td>{{ p.nombres }}</td>
+                <td>{{ p.apellidos }}</td>
+                <td>{{ p.correo }}</td>
+                <td>{{ p.telefono }}</td>
+
+                <td class="acciones-tabla">
+                  <button
+                    class="btn-editar"
+                    (click)="editar(p)">
+                    Editar
+                  </button>
+
+                  <button
+                    class="btn-eliminar"
+                    (click)="eliminar(p)">
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="sin-datos">
+                  No se encontraron pasajeros.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+  </div>
+
+</section>
